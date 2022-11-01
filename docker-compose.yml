@@ -1,0 +1,78 @@
+version: "3.9"
+
+services:
+  #    web:
+  #        build:
+  #            context: .
+  #        image: nginx:latest
+  #        restart: always
+  #        networks:
+  #            app_net:
+  #                ipv4_address: 172.20.2.8
+  #        ports:
+  #            - "88:80"
+  #        volumes:
+  #            - .:/wwwroot/
+  #            - ./docker/default.conf:/etc/nginx/conf.d/default.conf
+  #        links:
+  #            - php
+  #    php:
+  #        image: php:8.1-fpm
+  #        restart: always
+  #        volumes:
+  #            - .:/wwwroot/
+  #            - ./docker/php.ini:/usr/local/etc/php/php.ini
+  #        networks:
+  #            app_net:
+  #                ipv4_address: 172.20.2.18
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "36379:6379"
+    networks:
+      app_net:
+        ipv4_address: 172.20.2.6
+      #    mysql:
+      #        image: mysql:latest
+      #        restart: always
+      #        environment:
+      #            MYSQL_ROOT_PASSWORD: 'fucking123sql'
+      #        ports:
+      #            - "23306:3306"
+      #        networks:
+      #            app_net:
+      #                ipv4_address: 172.20.2.40
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'fucking123sql'
+    ports:
+      - "5432:5432"
+    networks:
+      app_net:
+        ipv4_address: 172.20.2.16
+#  clickhouse:
+#    image: yandex/clickhouse-server:latest
+#    restart: always
+#    environment:
+#      CLICKHOUSE_DB: chdb
+#      CLICKHOUSE_USER: chuser
+#      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+#      CLICKHOUSE_PASSWORD: fuck123
+#    ports:
+#      - "8123:8123"
+#      - "9000:9000"
+#      - "9009:9009"
+#    networks:
+#      app_net:
+#        ipv4_address: 172.20.2.2
+
+networks:
+  app_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.2.0/24
